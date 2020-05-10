@@ -1,0 +1,14 @@
+language: minimal
+
+services:
+  - docker
+
+script:
+  - docker-compose -f deploy/docker/docker-compose-build.yaml build --parallel  
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push mskrzypietz/udagram-reverseproxy
+  - docker push mskrzypietz/udagram-restapi-feed
+  - docker push mskrzypietz/udagram-restapi-user  
+  - docker push mskrzypietz/udagram-frontend
