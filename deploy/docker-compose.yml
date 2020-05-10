@@ -1,0 +1,20 @@
+version: "3"
+services:
+  reverseproxy:
+      image: mskrzypietz/udagram-reverseproxy
+      ports:
+          - 8080:8080
+      restart: always
+      depends_on:
+        - backend-user
+        - backend-feed     
+  backend-user:
+    image: mskrzypietz/udagram-restapi-user
+  backend-feed:
+    image: mskrzypietz/udagram-restapi-feed
+    volumes:
+      - $HOME/.aws:/root/.aws
+  frontend:
+    image: mskrzypietz/udagram-frontend
+    ports:
+      - "8100:80"
